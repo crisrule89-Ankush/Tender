@@ -902,6 +902,11 @@ test("serves the login page, protects app APIs, and checks CSRF tokens", async (
   }));
 
   const baseUrl = `http://127.0.0.1:${server.address().port}`;
+  const health = await fetch(`${baseUrl}/healthz`);
+  assert.equal(health.status, 200);
+  assert.deepEqual(await health.json(), { status: "ok" });
+  assert.equal(health.headers.get("cache-control"), "no-store");
+
   const loginPage = await fetch(baseUrl);
   assert.equal(loginPage.status, 200);
   assert.equal(loginPage.headers.get("cache-control"), "no-store");

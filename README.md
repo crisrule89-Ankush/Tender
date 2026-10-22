@@ -9,6 +9,34 @@ A JavaScript web application with a Node.js/Express server, a SQL Server data st
 - SQL Server reachable from this computer
 - A SQL Server database and an existing `dbo.userlogin` table
 
+## Hosting on Render
+
+The repository is configured for Render's Node.js web service runtime. Connect the GitHub repository `crisrule89-Ankush/Tender` on branch `main`, with build command `npm ci` and start command `npm start`. The service listens on Render's assigned `PORT` at `0.0.0.0`, and `/healthz` is available as the health-check path. The Node engine range is `>=20 <25` so Render selects a supported Node 24 release rather than an unbounded newest major.
+
+Add these variables in the Render service's **Environment** settings; do not commit `.env` or place secret values in `render.yaml`:
+
+| Variable | Value |
+| --- | --- |
+| `NODE_ENV` | `production` |
+| `SESSION_SECRET` | A newly generated private random value of at least 32 characters |
+| `DB_SERVER` | SQL Server host |
+| `DB_PORT` | `1433` |
+| `DB_NAME` | Existing database name, e.g. `GSMMaster` |
+| `DB_USER` | SQL Server login |
+| `DB_PASSWORD` | SQL Server password |
+| `DB_ENCRYPT` | `true` |
+| `DB_TRUST_SERVER_CERTIFICATE` | `false` when SQL Server uses a trusted certificate |
+| `LOGIN_USERNAME_COLUMN` | `User_Name` |
+| `LOGIN_PASSWORD_COLUMN` | `User_Password` |
+| `LOGIN_BRANCH_COLUMN` | `Branch_Name` |
+| `LOGIN_ROLE_COLUMN` | `Role` |
+| `AUTH_PASSWORD_FORMAT` | Match the current `dbo.userlogin` password representation |
+| `AUTO_CREATE_SCHEMA` | `true` if the SQL login can create/alter application tables; otherwise run `sql/schema.sql` as a database administrator first and set `false` |
+
+Generate the session secret locally with `node -e "console.log(require('node:crypto').randomBytes(48).toString('base64'))"` and enter it directly in Render. Never share or commit it. Configure the SQL Server firewall to allow the outbound IP ranges shown in the Render service's **Connect → Outbound** details, and ensure the host accepts TCP connections on port 1433. The SQL account needs access to `GSMMaster`, the existing `dbo.userlogin` table, and the application tables in `dbo`.
+
+After saving environment variables, use **Manual Deploy → Deploy latest commit** or let the connected `main` branch deploy automatically. Set `/healthz` as the health-check path if needed. The Express in-memory session store emits a production warning and does not persist sessions across restarts; users may need to sign in again after a restart or deploy.
+
 ## 1. Open the project in VS Code
 
 Open the `Tender_Requisition` folder in VS Code. Open **Terminal → New Terminal**; commands below are intended for PowerShell in the project folder.

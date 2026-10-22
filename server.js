@@ -102,6 +102,7 @@ function loadSchema() {
 }
 
 app.disable("x-powered-by");
+if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
 app.use(helmet());
 app.use(express.json({ limit: "256kb" }));
 app.use(session({
@@ -124,6 +125,10 @@ const loginLimiter = rateLimit({
   standardHeaders: "draft-7",
   legacyHeaders: false,
   message: { error: "Too many sign-in attempts. Please try again later." }
+});
+
+app.get("/healthz", (_req, res) => {
+  res.set("Cache-Control", "no-store").json({ status: "ok" });
 });
 
 function ensureCsrfToken(req) {
@@ -1820,7 +1825,7 @@ async function start() {
       SELECT TOP (0) Id FROM dbo.TenderAppearanceSettings;
     `);
   }
-  app.listen(port, () => console.log(`Tender Management is running at http://localhost:${port}`));
+  app.listen(port, "0.0.0.0", () => console.log(`Tender Management is running on port ${port}`));
 }
 
 if (require.main === module) {

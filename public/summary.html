@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09234b">
+  <title>Summary | Escon Management</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="app-brand" href="/dashboard.html">
+        <span class="app-brand-mark">E</span>
+        <span class="app-brand-text"><strong>ESCON</strong><small>Tender &amp; Bank Guarantee Management</small></span>
+      </a>
+      <div class="user-tools"><span class="user-name" id="user-name"></span><button class="button" id="logout-button" type="button">Sign out</button></div>
+    </header>
+    <div class="workspace-layout">
+      <aside class="sidebar" aria-label="Main navigation">
+        <p class="sidebar-heading">WORKSPACE</p>
+        <a class="sidebar-link" href="/dashboard.html"><span aria-hidden="true">⌂</span> Overview</a>
+        <a class="sidebar-link active" href="/summary.html" aria-current="page"><span aria-hidden="true">▦</span> Summary</a>
+        <a class="sidebar-link" href="/tender.html"><span aria-hidden="true">▤</span> Tender &amp; Bank Guarantee</a>
+        <a class="sidebar-link admin-nav" href="/field-settings.html" hidden><span aria-hidden="true">⚙</span> Field Settings</a>
+      </aside>
+      <main class="page-wrap dashboard-content summary-content">
+        <div class="page-heading summary-page-heading">
+          <div><p class="eyebrow">RECORDS WORKSPACE</p><h1>Submitted records</h1><p>Search, review, and export tender requests available to your account.</p></div>
+          <div class="summary-heading-actions">
+            <a class="button button-secondary summary-export" href="/api/tenders/export.xlsx" id="export-excel-link"><span aria-hidden="true">↓</span> Download Excel</a>
+            <a class="button button-primary summary-new-record" href="/tender.html" id="new-record-link"><span aria-hidden="true">＋</span> New record</a>
+          </div>
+        </div>
+        <div class="notice" id="summary-message" role="status" aria-live="polite" hidden></div>
+        <section class="records-panel summary-panel" aria-labelledby="summary-title">
+          <div class="records-header summary-toolbar">
+            <div class="section-head">
+              <div class="summary-section-title"><span class="summary-title-icon" aria-hidden="true">▦</span><div><h2 id="summary-title">Tender summary</h2><p>Browse and manage your requests</p></div></div>
+              <span class="summary-count-pill" id="summary-count">Loading records...</span>
+            </div>
+            <label class="summary-search"><span>Search records</span><span class="summary-search-input"><span aria-hidden="true">⌕</span><input id="summary-search" type="search" placeholder="Unique ID, branch, work or client"></span></label>
+          </div>
+          <div class="records-content">
+            <table class="records-table">
+              <thead><tr><th>Unique ID</th><th>Branch</th><th>Name of work / Client</th><th>Job type</th><th>Amount</th><th>Tender status</th><th>Rahul approval</th><th>Amrita approval</th><th>Banking status</th><th>Updated</th><th></th></tr></thead>
+              <tbody id="summary-records"><tr><td colspan="11" class="empty-state loading">Loading records...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="/summary.js" defer></script>
+</body>
+</html>

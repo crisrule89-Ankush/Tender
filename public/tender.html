@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09234b">
+  <title>Tender form | Escon Management</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="tender-workspace-page">
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="app-brand" href="/tender.html">
+        <span class="app-brand-mark">E</span>
+        <span class="app-brand-text"><strong>ESCON</strong><small>Tender &amp; Bank Guarantee Management</small></span>
+      </a>
+      <div class="user-tools"><span class="user-name" id="user-name"></span><button class="button" id="logout-button" type="button">Sign out</button></div>
+    </header>
+    <div class="workspace-layout">
+      <aside class="sidebar" aria-label="Main navigation">
+        <p class="sidebar-heading">WORKSPACE</p>
+        <a class="sidebar-link" href="/dashboard.html"><span aria-hidden="true">⌂</span> Overview</a>
+        <a class="sidebar-link" href="/summary.html"><span aria-hidden="true">▦</span> Summary</a>
+        <a class="sidebar-link active" href="/tender.html" aria-current="page"><span aria-hidden="true">▤</span> Tender &amp; Bank Guarantee</a>
+        <a class="sidebar-link admin-nav" href="/field-settings.html" hidden><span aria-hidden="true">⚙</span> Field Settings</a>
+      </aside>
+      <main class="page-wrap tender-page">
+        <div class="page-heading tender-hero">
+          <div class="tender-hero-copy">
+            <span class="tender-hero-icon" aria-hidden="true">▤</span>
+            <div>
+              <p class="eyebrow">TENDER MANAGEMENT WORKSPACE</p>
+              <h1>Tender &amp; Bank Guarantee</h1>
+              <p>Manage tender details, requisitions, and bank guarantees in one place.</p>
+            </div>
+          </div>
+          <span class="record-count" id="record-count">Loading records...</span>
+        </div>
+        <div class="notice" id="form-message" role="status" aria-live="polite" hidden></div>
+        <form id="tender-form" class="form-panel" novalidate>
+          <div class="section-head tender-form-heading">
+            <span class="section-head-icon" aria-hidden="true">＋</span>
+            <div>
+              <h2 id="form-title">New record</h2>
+              <p id="form-description">Complete the applicable details below. Configure dropdown choices and fields in Field Settings.</p>
+            </div>
+          </div>
+          <div class="form-actions tender-form-actions">
+            <button class="button button-secondary" id="reset-button" type="reset">Clear form</button>
+            <button class="button button-primary" id="save-button" type="submit">Save tender record</button>
+            <button class="button button-primary" id="review-approve" type="button" hidden>Reviewer Approval</button>
+            <button class="button button-danger" id="review-reject" type="button" hidden>Not approved</button>
+            <button class="button button-primary" id="banking-approve" type="button" hidden>Banking Approval</button>
+          </div>
+          <div id="form-sections"></div>
+        </form>
+        <section class="records-panel" aria-labelledby="records-title">
+          <div class="records-header">
+            <div class="section-head">
+              <span class="section-head-icon records-heading-icon" aria-hidden="true">↗</span>
+              <div><h2 id="records-title">Recent records</h2><p>Latest 100 tender and bank guarantee records.</p></div>
+            </div>
+          </div>
+          <div class="records-content">
+            <table class="records-table">
+              <thead><tr><th>Unique ID</th><th>Work / Client</th><th>Tender type</th><th>Value</th><th>Submission</th><th>BG amount</th><th>Saved by</th><th>Updated</th><th>Status</th></tr></thead>
+              <tbody id="records-body"><tr><td colspan="9" class="empty-state loading">Loading records...</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="/reference-labels.js" defer></script>
+  <script src="/app.js" defer></script>
+</body>
+</html>

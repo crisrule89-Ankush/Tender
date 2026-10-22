@@ -1,0 +1,26 @@
+{
+  "branch": [],
+  "department": [],
+  "referenceType": ["NIT Ref No", "LOA No", "WorkOrder No"],
+  "workType": [],
+  "jobType": ["Installation", "Maintenance", "Tender"],
+  "tenderType": [],
+  "requisitionType": [
+    "Tender Fees",
+    "Processing Fees",
+    "Legal & Stationary Charges",
+    "Stamp Duty Charges",
+    "EMD",
+    "PBG",
+    "Additional BG",
+    "Advanced BG",
+    "Extention BG",
+    "FDR Renewal"
+  ],
+  "emdConvertedToSd": ["Yes", "No"],
+  "refundable": ["Yes", "No"],
+  "paymentTerm": [],
+  "preparedBy": [],
+  "approvalStatus": ["Pending", "Approved", "Not Approved"],
+  "jobStatus": ["Pending", "Processed"]
+}

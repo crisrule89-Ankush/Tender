@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09234b">
+  <title>Field Settings | Escon Management</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="settings-workspace-page">
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="app-brand" href="/dashboard.html">
+        <span class="app-brand-mark">E</span>
+        <span class="app-brand-text"><strong>ESCON</strong><small>Tender &amp; Bank Guarantee Management</small></span>
+      </a>
+      <div class="user-tools"><span class="user-name" id="user-name"></span><button class="button" id="logout-button" type="button">Sign out</button></div>
+    </header>
+    <div class="workspace-layout">
+      <aside class="sidebar" aria-label="Main navigation">
+        <p class="sidebar-heading">WORKSPACE</p>
+        <a class="sidebar-link" href="/dashboard.html"><span aria-hidden="true">⌂</span> Overview</a>
+        <a class="sidebar-link" href="/summary.html"><span aria-hidden="true">▦</span> Summary</a>
+        <a class="sidebar-link" href="/tender.html"><span aria-hidden="true">▤</span> Tender &amp; Bank Guarantee</a>
+        <a class="sidebar-link active" href="/field-settings.html" aria-current="page"><span aria-hidden="true">⚙</span> Field Settings</a>
+      </aside>
+      <main class="page-wrap dashboard-content settings-page">
+        <div class="page-heading settings-hero">
+          <div class="settings-hero-copy">
+            <span class="settings-hero-icon" aria-hidden="true">⚙</span>
+            <div>
+              <p class="eyebrow">ADMINISTRATION WORKSPACE</p>
+              <h1>Field Settings</h1>
+              <p>Organize fields across workflow sections. All business values are free-form and can be left blank.</p>
+            </div>
+          </div>
+          <span class="settings-hero-note">Changes apply to open Tender forms</span>
+        </div>
+        <div class="notice" id="settings-message" role="status" aria-live="polite" hidden></div>
+        <form id="settings-form" class="form-panel settings-config-panel">
+          <div class="section-head settings-section-heading">
+            <span class="settings-section-icon" aria-hidden="true">▦</span>
+            <div>
+              <h2>Form field configuration</h2>
+              <p>All business fields accept free-form values and can be left blank. Dropdown choices are suggestions; field types do not restrict entered values. Select a field to reorder or delete it.</p>
+            </div>
+          </div>
+          <div class="settings-toolbar settings-command-bar">
+            <div class="settings-command-row">
+              <label class="toolbar-control">
+                <span>Selected field</span>
+                <select id="selected-field" aria-label="Select a field for field actions" disabled>
+                  <option value="">Loading fields...</option>
+                </select>
+              </label>
+              <label class="toolbar-control">
+                <span>Add to category</span>
+                <select id="new-field-category" aria-label="Choose a category for the new field">
+                  <option value="Custom fields">Custom fields</option>
+                </select>
+              </label>
+              <span id="field-count" class="field-count"></span>
+            </div>
+            <div class="settings-command-row settings-command-actions">
+              <button class="button button-secondary" id="add-field" type="button">＋ Add field</button>
+              <button class="button button-secondary" id="move-field-up" type="button" aria-label="Move selected field up" disabled>↑ Move up</button>
+              <button class="button button-secondary" id="move-field-down" type="button" aria-label="Move selected field down" disabled>↓ Move down</button>
+              <button class="button button-danger settings-delete-selected" id="delete-field" type="button" disabled>Delete selected field</button>
+              <a class="button button-secondary" href="/tender.html">Open tender form</a>
+              <button class="button button-secondary" id="reset-appearance" type="button">Restore default colors</button>
+              <button class="button button-secondary" id="save-appearance" type="button">Save login colors</button>
+              <button class="button button-secondary" id="save-access" type="button">Save tab access</button>
+              <button class="button button-primary" id="save-settings" type="submit">Save field settings</button>
+            </div>
+          </div>
+          <div id="settings-sections">
+            <p class="settings-loading">Loading field settings...</p>
+          </div>
+        </form>
+        <section class="form-panel access-panel" aria-labelledby="tab-access-title">
+          <div class="section-head settings-section-heading">
+            <span class="settings-section-icon" aria-hidden="true">⌑</span>
+            <div><h2 id="tab-access-title">User and role access</h2><p>Role defaults apply unless Admin sets a user's individual permissions below. Admin accounts retain full access; approver access remains assigned-record based.</p></div>
+          </div>
+          <div class="access-toolbar">
+            <label class="toolbar-control"><span>New role name</span><input id="new-access-role" type="text" maxlength="80" placeholder="e.g. Manager"></label>
+            <button class="button button-secondary" id="add-access-role" type="button">＋ Add role</button>
+          </div>
+          <div id="tab-access-matrix" class="access-matrix">
+            <p class="settings-loading">Loading tab access...</p>
+          </div>
+          <div class="section-head settings-section-heading user-access-heading">
+            <div><h3>Login accounts</h3><p>Every login from dbo.userlogin is listed. Enable Customize to override role defaults for that individual account.</p></div>
+          </div>
+          <div id="user-access-matrix" class="access-matrix user-access-matrix">
+            <p class="settings-loading">Loading login accounts...</p>
+          </div>
+        </section>
+        <section class="form-panel appearance-panel settings-appearance-panel" aria-labelledby="appearance-title">
+          <div class="section-head settings-section-heading">
+            <span class="settings-section-icon appearance-section-icon" aria-hidden="true">◉</span>
+            <div>
+              <h2 id="appearance-title">Login page colors</h2>
+              <p>Choose the shared sign-in page palette. Preview updates as you choose colors; use the top buttons to save or restore defaults.</p>
+            </div>
+          </div>
+          <div id="appearance-colors" class="appearance-grid">
+            <p class="settings-loading">Loading login colors...</p>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="/appearance.js" defer></script>
+  <script src="/field-settings.js" defer></script>
+</body>
+</html>

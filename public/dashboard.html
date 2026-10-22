@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09234b">
+  <title>Workspace | Escon Management</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="app-brand" href="/dashboard.html">
+        <span class="app-brand-mark">E</span>
+        <span class="app-brand-text"><strong>ESCON</strong><small>Tender &amp; Bank Guarantee Management</small></span>
+      </a>
+      <div class="user-tools"><span class="user-name" id="user-name"></span><button class="button" id="logout-button" type="button">Sign out</button></div>
+    </header>
+    <div class="workspace-layout">
+      <aside class="sidebar" aria-label="Main navigation">
+        <p class="sidebar-heading">WORKSPACE</p>
+        <a class="sidebar-link active" href="/dashboard.html" aria-current="page"><span aria-hidden="true">⌂</span> Overview</a>
+        <a class="sidebar-link" href="/summary.html"><span aria-hidden="true">▦</span> Summary</a>
+        <a class="sidebar-link" href="/tender.html"><span aria-hidden="true">▤</span> Tender &amp; Bank Guarantee</a>
+        <a class="sidebar-link admin-nav" href="/field-settings.html" hidden><span aria-hidden="true">⚙</span> Field Settings</a>
+      </aside>
+      <main class="page-wrap dashboard-content">
+        <section class="overview-hero">
+          <div class="overview-hero-copy">
+            <p class="eyebrow">WORKSPACE OVERVIEW</p>
+            <h1>Tender request overview</h1>
+            <p id="dashboard-description">Track submitted requests and their approval progress.</p>
+          </div>
+          <div class="overview-hero-mark" aria-hidden="true"><span>ESCON</span><i></i><i></i><i></i></div>
+        </section>
+        <div class="notice notice-error" id="dashboard-message" role="alert" hidden></div>
+        <section class="dashboard-metrics" aria-label="Tender request counts">
+          <article class="dashboard-metric metric-total">
+            <span class="metric-icon" aria-hidden="true">▤</span>
+            <div><p>Submitted requests</p><strong id="metric-total">—</strong><small>Requests available to your account</small></div>
+          </article>
+          <article class="dashboard-metric metric-approved">
+            <span class="metric-icon" aria-hidden="true">✓</span>
+            <div><p>Approved</p><strong id="metric-approved">—</strong><small>Banking approval completed</small></div>
+          </article>
+          <article class="dashboard-metric metric-rejected">
+            <span class="metric-icon" aria-hidden="true">×</span>
+            <div><p>Not approved</p><strong id="metric-not-approved">—</strong><small>Returned for changes</small></div>
+          </article>
+          <article class="dashboard-metric metric-pending">
+            <span class="metric-icon" aria-hidden="true">◷</span>
+            <div><p>Pending</p><strong id="metric-pending">—</strong><small>Awaiting reviewer or Banking</small></div>
+          </article>
+        </section>
+        <section class="dashboard-insights">
+          <article class="dashboard-chart-card">
+            <div class="dashboard-section-heading">
+              <div><p class="eyebrow">REQUEST STATUS</p><h2>Workflow progress</h2></div>
+              <span class="dashboard-live"><span aria-hidden="true"></span> Live updates</span>
+            </div>
+            <div class="dashboard-chart-content">
+              <div id="status-chart" class="status-donut" role="img" aria-label="Loading request status chart">
+                <div class="status-donut-center"><strong id="chart-total">—</strong><span>requests</span></div>
+              </div>
+              <div class="status-legend" aria-label="Request status breakdown">
+                <div><span class="legend-swatch legend-approved"></span><span>Approved</span><strong id="legend-approved">—</strong></div>
+                <div><span class="legend-swatch legend-pending"></span><span>Pending</span><strong id="legend-pending">—</strong></div>
+                <div><span class="legend-swatch legend-rejected"></span><span>Not approved</span><strong id="legend-not-approved">—</strong></div>
+              </div>
+            </div>
+          </article>
+          <aside class="dashboard-shortcuts">
+            <p class="eyebrow">QUICK ACCESS</p>
+            <h2>Continue your work</h2>
+            <p>Open the tender workspace to create a request or review details available to your account.</p>
+            <a class="button button-primary" href="/tender.html">Open Tender &amp; Bank Guarantee <span aria-hidden="true">→</span></a>
+            <a class="button button-secondary" href="/summary.html">View submitted records</a>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="/dashboard.js" defer></script>
+</body>
+</html>

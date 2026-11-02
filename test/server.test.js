@@ -446,6 +446,10 @@ test("scopes branch and approver record access and reports workflow status", () 
   assert.equal(canAccessRecord({ session: { role: "operation", branch: "Bangalore" } }, data), true);
   assert.equal(canAccessRecord({ session: { role: "user", branch: "Mumbai" } }, data), false);
   assert.equal(canAccessRecord({ session: { role: "approver", user: "rahul" } }, data), true);
+  const simranAssignedData = { ...data, assignTo: "simran" };
+  assert.equal(canAccessRecord({ session: { role: "approver", user: "simran" } }, simranAssignedData), true);
+  assert.equal(canReviewRecord({ session: { role: "approver", user: "simran" } }, simranAssignedData), true);
+  assert.equal(canReviewRecord({ session: { role: "approver", user: "simran" } }, data), false);
   assert.equal(canAccessRecord({ session: { role: "approver", user: "amrita" } }, data), false);
   assert.equal(canAccessRecord({ session: { role: "banking" } }, data), false);
   assert.equal(canAccessRecord({ session: { role: "banking" } }, { ...data, approvalStatus: "Approved" }), true);
@@ -460,10 +464,13 @@ test("scopes branch and approver record access and reports workflow status", () 
   assert.equal(canReviewRecord({ session: { role: "approver", user: "rahul" } }, data), true);
   assert.equal(canReviewRecord({ session: { role: "approver", user: "amrita" } }, data), false);
   assert.equal(isConfiguredApprover("rahul", ["Rahul"]), true);
+  assert.equal(isConfiguredApprover("simran", ["Simran"]), true);
   assert.equal(isConfiguredApprover(" AmRiTa ", ["amrita"]), true);
   assert.equal(isConfiguredApprover("rahul", ["amrita"]), false);
   assert.equal(isConfiguredApprover(" ", ["rahul"]), false);
   assert.equal(canSubmitReview({ session: { role: "approver", user: "rahul" } }, data, ["Rahul"]), true);
+  assert.equal(canSubmitReview({ session: { role: "approver", user: "simran" } }, simranAssignedData, ["simran"]), true);
+  assert.equal(canSubmitReview({ session: { role: "approver", user: "simran" } }, simranAssignedData, ["rahul", "amrita"]), false);
   assert.equal(canSubmitReview({ session: { role: "approver", user: "rahul" } }, data, ["Amrita"]), false);
   assert.equal(canSubmitReview({ session: { role: "admin", user: "administrator" } }, data, []), true);
   assert.equal(canReviewRecord({ session: { role: "admin", user: "admin1" } }, data), true);
@@ -554,7 +561,7 @@ test("creates Excel downloads with record metadata and only the fields supplied 
 });
 
 test("reports named reviewer and Banking statuses for the branch summary", () => {
-  const approvers = ["amrita.sharma", "Rahul Kumar"];
+  const approvers = ["amrita.sharma", "Rahul Kumar", "simran"];
   const assignedToRahul = {
     assignTo: "Rahul Kumar",
     approvalStatus: "Pending",
@@ -563,6 +570,7 @@ test("reports named reviewer and Banking statuses for the branch summary", () =>
   assert.deepEqual(workflowSummary(assignedToRahul, approvers), {
     rahul: { name: "Rahul", status: "Pending" },
     amrita: { name: "Amrita", status: "Not assigned" },
+    simran: { name: "Simran", status: "Not assigned" },
     banking: { status: "Waiting for approval", processedBy: "", processedAt: "" }
   });
   assert.equal(workflowSummary({
@@ -575,6 +583,17 @@ test("reports named reviewer and Banking statuses for the branch summary", () =>
     approvalStatus: "Approved",
     reviewedBy: "Admin"
   }, approvers).rahul.status, "Approved by Admin");
+  assert.equal(workflowSummary({
+    assignTo: "Simran",
+    approvalStatus: "Pending",
+    jobStatus: "Pending"
+  }, approvers).simran.status, "Pending");
+  assert.equal(workflowSummary({
+    assignTo: "Simran",
+    approvalStatus: "Approved",
+    reviewedBy: "simran",
+    jobStatus: "Pending"
+  }, approvers).simran.status, "Approved");
   assert.equal(workflowSummary({
     assignTo: "Rahul",
     approvalStatus: "Approved",
@@ -773,12 +792,13 @@ test("dashboard uses scoped status counts and hides workflow actions from user-r
   assert.match(appSource, /document\.getElementById\("banking-approve"\)\.hidden =[\s\S]*!\(\["banking", "admin"\]\.includes\(role\) \|\| isBankingLogin\)/);
 });
 
-test("reviewer assignment choices use Rahul and Amrita accounts with the Approver role", () => {
+test("reviewer assignment choices include Rahul, Amrita, and Simran accounts with the Approver role", () => {
   const serverSource = fs.readFileSync(require.resolve("../server"), "utf8");
   assert.match(serverSource, /LOWER\(LTRIM\(RTRIM\(\$\{roleColumn\}\)\)\) = @approverRole/);
   assert.doesNotMatch(serverSource, /@adminRole/);
   assert.match(serverSource, /LOWER\(\$\{usernameColumn\}\) LIKE '%rahul%'/);
   assert.match(serverSource, /LOWER\(\$\{usernameColumn\}\) LIKE '%amrita%'/);
+  assert.match(serverSource, /LOWER\(\$\{usernameColumn\}\) LIKE '%simran%'/);
 });
 
 test("uses SQL workflow columns to repair stale JSON workflow state on read", () => {

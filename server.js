@@ -675,7 +675,7 @@ async function getApproverUsernames(pool) {
       SELECT ${usernameColumn} AS username
       FROM dbo.userlogin
       WHERE LOWER(LTRIM(RTRIM(${roleColumn}))) = @approverRole
-        AND (LOWER(${usernameColumn}) LIKE '%rahul%' OR LOWER(${usernameColumn}) LIKE '%amrita%')
+        AND (LOWER(${usernameColumn}) LIKE '%rahul%' OR LOWER(${usernameColumn}) LIKE '%amrita%' OR LOWER(${usernameColumn}) LIKE '%simran%')
       ORDER BY ${usernameColumn}
     `);
   return result.recordset
@@ -758,6 +758,7 @@ function workflowSummary(data, approvers) {
   const normalizedReviewedBy = reviewedBy.toLowerCase();
   const rahul = approvers.find((username) => username.toLowerCase().includes("rahul"));
   const amrita = approvers.find((username) => username.toLowerCase().includes("amrita"));
+  const simran = approvers.find((username) => username.toLowerCase().includes("simran"));
   const statusForReviewer = (username, reviewerName) => {
     const normalizedReviewerName = reviewerName.toLowerCase();
     const assignedToReviewer = normalizedAssignedTo.includes(normalizedReviewerName) ||
@@ -779,6 +780,7 @@ function workflowSummary(data, approvers) {
   return {
     rahul: { name: "Rahul", status: statusForReviewer(rahul, "rahul") },
     amrita: { name: "Amrita", status: statusForReviewer(amrita, "amrita") },
+    simran: { name: "Simran", status: statusForReviewer(simran, "simran") },
     banking: {
       status: data.jobStatus === "Processed" ? "Approved" : bankingStatus,
       processedBy: data.jobStatus === "Processed" ? String(data.processedBy || "") : "",

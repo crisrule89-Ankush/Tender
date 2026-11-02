@@ -83,6 +83,7 @@ function renderRecords() {
     addStatusCell(row, record.status);
     addStatusCell(row, record.workflow?.rahul?.status || "Not assigned");
     addStatusCell(row, record.workflow?.amrita?.status || "Not assigned");
+    addStatusCell(row, record.workflow?.simran?.status || "Not assigned");
     addStatusCell(row, record.workflow?.banking?.status || "Waiting for approval");
     addCell(row, formatTimestampInIndia(record.createdAt));
     const actionCell = document.createElement("td");

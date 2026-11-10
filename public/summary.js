@@ -8,6 +8,64 @@ let canDownloadPdf = false;
 let canRejectQueuedRequests = false;
 let isBankingLogin = false;
 let currentRole = "";
+let sortKey = "updated";
+let sortDirection = "desc";
+const sortCollator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
+
+function getSortValue(record, key) {
+  const data = record.formData;
+  switch (key) {
+    case "uniqueId": return record.uniqueId || `#${record.id}`;
+    case "branch": return data.branch;
+    case "work": return [data.nameOfWork, data.clientName].filter(Boolean).join(" / ");
+    case "jobType": return data.jobType;
+    case "amount": return data.requisitionAmount || data.bankingAmount || data.tenderValue;
+    case "status": return record.status;
+    case "rahul": return record.workflow?.rahul?.status || "Not assigned";
+    case "amrita": return record.workflow?.amrita?.status || "Not assigned";
+    case "simran": return record.workflow?.simran?.status || "Not assigned";
+    case "banking": return record.workflow?.banking?.status || "Waiting for approval";
+    case "updated": return new Date(record.createdAt || 0).getTime() || 0;
+    default: return "";
+  }
+}
+
+function sortRecords(items) {
+  const direction = sortDirection === "asc" ? 1 : -1;
+  return [...items].sort((left, right) => {
+    const leftValue = getSortValue(left, sortKey);
+    const rightValue = getSortValue(right, sortKey);
+    let comparison;
+    if (sortKey === "updated") {
+      comparison = leftValue - rightValue;
+    } else if (sortKey === "amount") {
+      const leftAmount = Number.parseFloat(String(leftValue || "").replace(/[^\d.-]/g, ""));
+      const rightAmount = Number.parseFloat(String(rightValue || "").replace(/[^\d.-]/g, ""));
+      comparison = Number.isFinite(leftAmount) && Number.isFinite(rightAmount)
+        ? leftAmount - rightAmount
+        : sortCollator.compare(String(leftValue || ""), String(rightValue || ""));
+    } else {
+      comparison = sortCollator.compare(String(leftValue || ""), String(rightValue || ""));
+    }
+    return comparison * direction || (Number(left.id) - Number(right.id)) * -1;
+  });
+}
+
+function updateSortControls() {
+  document.querySelectorAll(".summary-sort-button").forEach((button) => {
+    const active = button.dataset.sort === sortKey;
+    const header = button.closest("th");
+    header.setAttribute("aria-sort", active
+      ? (sortDirection === "asc" ? "ascending" : "descending")
+      : "none");
+    button.querySelector(".summary-sort-arrow").textContent = active
+      ? (sortDirection === "asc" ? "▲" : "▼")
+      : "↕";
+    button.setAttribute("aria-label", `${button.childNodes[0].textContent.trim()}, ${active
+      ? `sorted ${sortDirection === "asc" ? "ascending" : "descending"}`
+      : "sort ascending"}`);
+  });
+}
 
 function addCell(row, text) {
   const cell = document.createElement("td");
@@ -49,17 +107,17 @@ function formatTimestampInIndia(value) {
 
 function renderRecords() {
   const query = searchInput.value.trim().toLowerCase();
-  const filtered = records.filter((record) => {
+  const filtered = sortRecords(records.filter((record) => {
     const data = record.formData;
     return [record.uniqueId, data.branch, data.nameOfWork, data.clientName]
       .some((value) => String(value || "").toLowerCase().includes(query));
-  });
+  }));
   countLabel.textContent = `${filtered.length} of ${records.length} record${records.length === 1 ? "" : "s"}`;
   recordsBody.replaceChildren();
   if (!filtered.length) {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
-    cell.colSpan = 11;
+    cell.colSpan = 12;
     cell.className = "empty-state";
     cell.textContent = records.length ? "No records match your search." : "No tender records have been saved yet.";
     row.append(cell);
@@ -237,6 +295,19 @@ function isBankingUser(user) {
 }
 
 searchInput.addEventListener("input", renderRecords);
+document.querySelectorAll(".summary-sort-button").forEach((button) => {
+  button.addEventListener("click", () => {
+    if (sortKey === button.dataset.sort) {
+      sortDirection = sortDirection === "asc" ? "desc" : "asc";
+    } else {
+      sortKey = button.dataset.sort;
+      sortDirection = "asc";
+    }
+    updateSortControls();
+    renderRecords();
+  });
+});
+updateSortControls();
 document.getElementById("logout-button").addEventListener("click", async () => {
   const csrfResponse = await fetch("/api/csrf");
   if (!csrfResponse.ok) throw new Error("Unable to establish a secure session.");

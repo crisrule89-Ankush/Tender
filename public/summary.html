@@ -43,7 +43,20 @@
           </div>
           <div class="records-content">
             <table class="records-table">
-              <thead><tr><th>Unique ID</th><th>Branch</th><th>Name of work / Client</th><th>Job type</th><th>Amount</th><th>Tender status</th><th>Rahul approval</th><th>Amrita approval</th><th>Simran approval</th><th>Banking status</th><th>Updated</th><th></th></tr></thead>
+              <thead><tr>
+                <th scope="col"><button class="summary-sort-button" type="button" data-sort="uniqueId">Unique ID<span class="summary-sort-arrow" aria-hidden="true"></span></button></th>
+                <th scope="col"><button class="summary-sort-button" type="button" data-sort="branch">Branch<span class="summary-sort-arrow" aria-hidden="true"></span></button></th>
+                <th scope="col"><button class="summary-sort-button" type="button" data-sort="work">Name of work / Client<span class="summary-sort-arrow" aria-hidden="true"></span></button></th>
+                <th scope="col"><button class="summary-sort-button" type="button" data-sort="jobType">Job type<span class="summary-sort-arrow" aria-hidden="true"></span></button></th>
+                <th scope="col"><button class="summary-sort-button" type="button" data-sort="amount">Amount<span class="summary-sort-arrow" aria-hidden="true"></span></button></th>
+                <th scope="col"><button class="summary-sort-button" type="button" data-sort="status">Tender status<span class="summary-sort-arrow" aria-hidden="true"></span></button></th>
+                <th scope="col"><button class="summary-sort-button" type="button" data-sort="rahul">Rahul approval<span class="summary-sort-arrow" aria-hidden="true"></span></button></th>
+                <th scope="col"><button class="summary-sort-button" type="button" data-sort="amrita">Amrita approval<span class="summary-sort-arrow" aria-hidden="true"></span></button></th>
+                <th scope="col"><button class="summary-sort-button" type="button" data-sort="simran">Simran approval<span class="summary-sort-arrow" aria-hidden="true"></span></button></th>
+                <th scope="col"><button class="summary-sort-button" type="button" data-sort="banking">Banking status<span class="summary-sort-arrow" aria-hidden="true"></span></button></th>
+                <th scope="col"><button class="summary-sort-button" type="button" data-sort="updated">Updated<span class="summary-sort-arrow" aria-hidden="true"></span></button></th>
+                <th scope="col" aria-label="Actions"></th>
+              </tr></thead>
               <tbody id="summary-records"><tr><td colspan="12" class="empty-state loading">Loading records...</td></tr></tbody>
             </table>
           </div>

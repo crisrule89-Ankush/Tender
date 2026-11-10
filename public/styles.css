@@ -1147,6 +1147,11 @@ a { color: inherit; }
 .summary-open { min-height: 32px; padding: 0 10px; font-size: 12px; text-decoration: none; white-space: nowrap; }
 .summary-panel .records-table { min-width: 1060px; }
 .summary-panel .records-table th { position: sticky; top: 0; z-index: 1; padding-top: 14px; padding-bottom: 14px; border-bottom: 1px solid #ded6ed; color: #58497c; background: linear-gradient(180deg, #f5f1fb, #eee9f7); text-transform: uppercase; font-size: 10px; letter-spacing: .065em; white-space: nowrap; }
+.summary-sort-button { display: inline-flex; align-items: center; gap: 7px; padding: 0; border: 0; color: inherit; background: transparent; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
+.summary-sort-button:hover, .summary-sort-button:focus-visible { color: #38266f; }
+.summary-sort-button:focus-visible { outline: 2px solid #8a68d1; outline-offset: 4px; border-radius: 2px; }
+.summary-sort-arrow { min-width: 10px; color: #7656b8; font-size: 9px; line-height: 1; }
+.summary-sort-button:not(:hover):not(:focus-visible) .summary-sort-arrow { opacity: .58; }
 .summary-panel .records-table td { padding-top: 14px; padding-bottom: 14px; border-top-color: #edf1f6; }
 .summary-panel .records-table tbody tr { transition: background .15s ease; }
 .summary-panel .records-table tbody tr:hover { background: #faf8ff; }

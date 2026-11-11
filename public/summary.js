@@ -13,7 +13,7 @@ let sortDirection = "desc";
 const sortCollator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
 
 function getSummaryAmount(data) {
-  return data.bankingAmount || data.requisitionAmount || data.tenderValue;
+  return data.tenderValue || data.bankingAmount || data.requisitionAmount;
 }
 
 function getSortValue(record, key) {

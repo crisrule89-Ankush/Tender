@@ -12,6 +12,10 @@ let sortKey = "updated";
 let sortDirection = "desc";
 const sortCollator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
 
+function getSummaryAmount(data) {
+  return data.bankingAmount || data.requisitionAmount || data.tenderValue;
+}
+
 function getSortValue(record, key) {
   const data = record.formData;
   switch (key) {
@@ -19,7 +23,7 @@ function getSortValue(record, key) {
     case "branch": return data.branch;
     case "work": return [data.nameOfWork, data.clientName].filter(Boolean).join(" / ");
     case "jobType": return data.jobType;
-    case "amount": return data.requisitionAmount || data.bankingAmount || data.tenderValue;
+    case "amount": return getSummaryAmount(data);
     case "status": return record.status;
     case "rahul": return record.workflow?.rahul?.status || "Not assigned";
     case "amrita": return record.workflow?.amrita?.status || "Not assigned";
@@ -137,7 +141,7 @@ function renderRecords() {
     addCell(row, data.branch);
     addCell(row, [data.nameOfWork, data.clientName].filter(Boolean).join(" / "));
     addCell(row, data.jobType);
-    addCell(row, data.requisitionAmount || data.bankingAmount || data.tenderValue);
+    addCell(row, getSummaryAmount(data));
     addStatusCell(row, record.status);
     addStatusCell(row, record.workflow?.rahul?.status || "Not assigned");
     addStatusCell(row, record.workflow?.amrita?.status || "Not assigned");
